@@ -338,6 +338,21 @@ objects:
                         this condition is satisfied when there are at least N
                         versions (including the live version) newer than this
                         version of the object.
+                    - !ruby/object:Api::Type::Array
+                      name: 'matchesPrefix'
+                      description: |
+                        List of object name prefixes. This condition will be
+                        satisfied when at least one of the prefixes exactly
+                        matches the beginning of the object name.
+                      item_type: Api::Type::String
+                    - !ruby/object:Api::Type::Array
+                      name: 'matchesSuffix'
+                      description: |
+                        List of object name suffixes. This condition will be
+                        satisfied when at least one of the suffixes exactly
+                        matches the end of the object name.
+                      item_type: Api::Type::String
+
       - !ruby/object:Api::Type::String
         name: 'location'
         description: |
