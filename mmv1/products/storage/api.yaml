@@ -352,7 +352,6 @@ objects:
                         satisfied when at least one of the suffixes exactly
                         matches the end of the object name.
                       item_type: Api::Type::String
-
       - !ruby/object:Api::Type::String
         name: 'location'
         description: |
