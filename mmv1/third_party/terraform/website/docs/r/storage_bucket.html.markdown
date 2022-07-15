@@ -135,6 +135,10 @@ The following arguments are supported:
 
 * `noncurrent_time_before` - (Optional) Relevant only for versioned objects. The date in RFC 3339 (e.g. `2017-06-13`) when the object became nonconcurrent.
 
+* `matches_prefix` - (Optional) List of object name prefixes. This condition will be satisfied when at least one of the prefixes exactly matches the beginning of the object name.
+
+* `matches_suffix` - (Optional) List of object name suffixes. This condition will be satisfied when at least one of the suffixes exactly matches the end of the object name.
+
 <a name="nested_versioning"></a>The `versioning` block supports:
 
 * `enabled` - (Required) While set to `true`, versioning is fully enabled for this bucket.

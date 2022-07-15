@@ -208,6 +208,18 @@ func resourceStorageBucket() *schema.Resource {
 										Optional:    true,
 										Description: `Relevant only for versioned objects. The number of newer versions of an object to satisfy this condition.`,
 									},
+									"matches_prefix": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Elem:        &schema.Schema{Type: schema.TypeString},
+										Description: `List of object name prefixes. This condition will be satisfied when at least one of the prefixes exactly matches the beginning of the object name.`,
+									},
+									"matches_suffix": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Elem:        &schema.Schema{Type: schema.TypeString},
+                                                                                Description: `List of object name suffixes. This condition will be satisfied when at least one of the suffixes exactly matches the end of the object name.`,
+									},
 								},
 							},
 							Description: `The Lifecycle Rule's condition configuration.`,
@@ -996,6 +1008,8 @@ func flattenBucketLifecycleRuleCondition(condition *storage.BucketLifecycleRuleC
 		"days_since_custom_time":     int(condition.DaysSinceCustomTime),
 		"days_since_noncurrent_time": int(condition.DaysSinceNoncurrentTime),
 		"noncurrent_time_before":     condition.NoncurrentTimeBefore,
+		"matches_prefix":             convertStringArrToInterface(condition.MatchesPrefix),
+		"matches_suffix":             convertStringArrToInterface(condition.MatchesSuffix),
 	}
 	if condition.IsLive == nil {
 		ruleCondition["with_state"] = "ANY"
@@ -1209,6 +1223,24 @@ func expandStorageBucketLifecycleRuleCondition(v interface{}) (*storage.BucketLi
 
 	if v, ok := condition["noncurrent_time_before"]; ok {
 		transformed.NoncurrentTimeBefore = v.(string)
+	}
+	if v, ok := condition["matches_prefix"]; ok {
+		classes := v.([]interface{})
+		transformedClasses := make([]string, 0, len(classes))
+
+		for _, v := range classes {
+			transformedClasses = append(transformedClasses, v.(string))
+		}
+		transformed.MatchesPrefix = transformedClasses
+	}
+	if v, ok := condition["matches_suffix"]; ok {
+		classes := v.([]interface{})
+		transformedClasses := make([]string, 0, len(classes))
+
+		for _, v := range classes {
+			transformedClasses = append(transformedClasses, v.(string))
+		}
+		transformed.MatchesSuffix = transformedClasses
 	}
 
 	return transformed, nil

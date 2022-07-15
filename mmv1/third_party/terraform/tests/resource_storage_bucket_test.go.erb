@@ -1381,6 +1381,16 @@ resource "google_storage_bucket" "bucket" {
       with_state = "ARCHIVED"
     }
   }
+  lifecycle_rule {
+    action {
+      type          = "SetStorageClass"
+      storage_class = "ARCHIVE"
+    }
+    condition {
+      matches_prefix = ["prefix1"]
+      matches_suffix = ["suffix1"]
+    }
+  }
 }
 `, bucketName)
 }
@@ -1444,6 +1454,16 @@ resource "google_storage_bucket" "bucket" {
     }
     condition {
       with_state = "ARCHIVED"
+    }
+  }
+  lifecycle_rule {
+    action {
+      type          = "SetStorageClass"
+      storage_class = "ARCHIVE"
+    }
+    condition {
+      matches_prefix = ["prefix1"]
+      matches_suffix = ["suffix1"]
     }
   }
 }
